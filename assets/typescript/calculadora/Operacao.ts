@@ -53,6 +53,16 @@ export class Operacao {
     this.onCalculado(resultado);
   }
   
+  get ultimaPosicao(): string {
+    return this.operacao.length ? this.operacao[this.operacao.length - 1] : "0";
+  }
+  
+  set ultimaPosicao(valor: string) {
+    const ultimoIndex = this.operacao.length ? this.operacao.length - 1 : 0;
+    
+    this.operacao[ultimoIndex] = valor;
+  }
+  
   get length(): number {
     
     return this.operacao.length;
