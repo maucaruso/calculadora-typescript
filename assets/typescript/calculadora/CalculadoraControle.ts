@@ -1,10 +1,13 @@
 import { DataHora } from "./DataHora.js";
+import { Operacao } from "./Operacao.js";
 import { Tela } from "./Tela.js";
-
 export class CalculadoraControle {
 
   constructor(
-    private tela = new Tela()
+    private tela = new Tela(),
+    private operacao = new Operacao({
+      onCalculado: (resultado: string) => this.tela.conteudo = resultado
+    })
   ) {
 
     new DataHora();
@@ -38,6 +41,7 @@ export class CalculadoraControle {
           case "subtracao":
           case "divisao":
           case "multiplicacao":
+            this.adicionarOperador(<string>target.dataset.valor);
           break;
           
           case "ponto":
@@ -53,6 +57,7 @@ export class CalculadoraControle {
           break;
           
           case "igual":
+            this.calcular();
           break;
         }
 
@@ -61,8 +66,26 @@ export class CalculadoraControle {
 
   }
   
+  calcular():void {
+    this.operacao.calcular();
+  }
+  
+  adicionarOperacao(valor: string): void {
+    this.operacao.adicionar(valor);
+    
+    console.log(this.operacao.length);
+  }
+  
   adicionarNumero(numero: number): void {
+    
     this.tela.conteudo = numero.toString();
+    
+    this.adicionarOperacao(numero.toString());
+    
+  }
+  
+  adicionarOperador(operador: string): void {
+    this.adicionarOperacao(operador);
   }
 
 }
